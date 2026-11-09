@@ -36,7 +36,7 @@ pipeline {
     stage("build") {
       when {
         expression {
-          env.BRANCH_NAME == 'main'
+          env.GIT_BRANCH && (env.GIT_BRANCH.endsWith('main')
         }
       }
       steps {

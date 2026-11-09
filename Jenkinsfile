@@ -1,4 +1,3 @@
-CODE_CHANGES = getGitChanges()
 def gv
 
 pipeline {
@@ -36,7 +35,7 @@ pipeline {
     stage("build") {
       when {
         expression {
-          env.BRANCH_NAME == 'dev' && CODE_CHANGES == true
+          env.BRANCH_NAME == 'main'
         }
       }
       steps {
@@ -48,7 +47,7 @@ pipeline {
     stage("deploy") {
       when {
         expression {
-          params.PRODUCTION == True
+          params.PRODUCTION == true
         }
       }
       input {

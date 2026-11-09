@@ -26,7 +26,7 @@ pipeline {
     stage("test") {
       when {
         expression {
-          env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'main'
+          env.GIT_BRANCH && (env.GIT_BRANCH.endsWith('dev') || env.GIT_BRANCH.endsWith('main'))
         }
       }
       steps {
@@ -41,7 +41,7 @@ pipeline {
       }
       steps {
         script {
-          gv.buildApp
+          gv.buildApp()
         }
       }
     }
@@ -60,7 +60,7 @@ pipeline {
       }
       steps {
         script {
-          gv.deployApp
+          gv.deployApp()
           echo "Deploying to ${ENV}"
         }
       }

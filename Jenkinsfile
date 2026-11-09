@@ -1,9 +1,14 @@
-//CODE_CHANGES = getGitChanges()
+CODE_CHANGES = getGitChanges()
+def gv
+
 pipeline {
   agent any
+  //tools {
+    //maven "maven-3.9"
+  //}
   environment {
-    NEW_VERSION = '1.0.3'
-    //SERVER_CREDENTIALS = credentials('')
+    NEW_VERSION = "1.0.3"
+    //GITHUB_CREDENTIALS = credentials('github-cred')
   }
   parameters {
     //string(name: 'VERSION', defaultValue: '', description: 'version to deploy on Prod')
@@ -11,10 +16,17 @@ pipeline {
     booleanParam(name: 'PRODUCTION', defaultValue: false, description: '')
   }
   stages {
+    stage("init") {
+      steps {
+        script {
+          gv = load "script.groovy"
+        }
+      }
+    }
     stage("test") {
       when {
         expression {
-          BRANCH_NAME == 'dev' || BRANCH_NAME == 'main'
+          env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'main'
         }
       }
       steps {
@@ -24,11 +36,13 @@ pipeline {
     stage("build") {
       when {
         expression {
-          BRANCH_NAME == 'dev' && CODE_CHANGES == true
+          env.BRANCH_NAME == 'dev' && CODE_CHANGES == true
         }
       }
       steps {
-        echo "build stage"
+        script {
+          gv.buildApp
+        }
       }
     }
     stage("deploy") {
@@ -37,8 +51,18 @@ pipeline {
           params.PRODUCTION == True
         }
       }
+      input {
+        message "Select the environment to deploy to"
+        ok "Done"
+        parameters {
+          choice(name: 'ENV', choices: ['dev', 'staging', 'prod'], description: '')
+        }
+      }
       steps {
-        echo "deploy stage"
+        script {
+          gv.deployApp
+          echo "Deploying to ${ENV}"
+        }
       }
     }
   }

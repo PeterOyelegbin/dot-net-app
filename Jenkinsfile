@@ -1,3 +1,6 @@
+#!/usr/bin/env groovy
+
+@Library("jenkins-shared-lib")
 def gv
 
 pipeline {
@@ -25,9 +28,7 @@ pipeline {
     }
     stage("test") {
       when {
-        expression {
-          env.GIT_BRANCH && (env.GIT_BRANCH.endsWith('dev') || env.GIT_BRANCH.endsWith('main'))
-        }
+        expression {env.GIT_BRANCH && (env.GIT_BRANCH.endsWith('dev') || env.GIT_BRANCH.endsWith('main'))}
       }
       steps {
         echo "test stage with version ${NEW_VERSION}."
@@ -35,28 +36,22 @@ pipeline {
     }
     stage("build") {
       when {
-        expression {
-          env.GIT_BRANCH && (env.GIT_BRANCH.endsWith('main'))
-        }
+        expression {env.GIT_BRANCH && (env.GIT_BRANCH.endsWith('main'))}
       }
       steps {
         script {
-          gv.buildApp()
+          buildApp()
         }
       }
     }
     stage("deploy") {
       when {
-        expression {
-          params.PRODUCTION == true
-        }
+        expression {params.PRODUCTION == true}
       }
       input {
         message "Select the environment to deploy to"
         ok "Done"
-        parameters {
-          choice(name: 'ENV', choices: ['dev', 'staging', 'prod'], description: '')
-        }
+        parameters {choice(name: 'ENV', choices: ['dev', 'staging', 'prod'], description: '')}
       }
       steps {
         script {

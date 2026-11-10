@@ -1,4 +1,5 @@
-node {
+pipeline {
+  agent any
   stages {
     stage("test") {
       step {
@@ -11,14 +12,12 @@ node {
     stage("build") {
       when {
         expression {
-          //env.GIT_BRANCH && (env.GIT_BRANCH.endsWith('dev') || env.GIT_BRANCH.endsWith('main'))
           BRANCH_NAME == "main"
         }
       }
       step {
         script {
           echo "building the application ..."
-          echo "Executing pipeline for branch $BRANCH_NAME"
         }
       }
     }
@@ -32,7 +31,6 @@ node {
       step {
         script {
           echo "deploying the application ..."
-          echo "Executing pipeline for branch $BRANCH_NAME"
         }
       }
     }

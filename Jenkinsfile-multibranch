@@ -4,20 +4,35 @@ node {
       step {
         script {
           echo "testing the application ..."
+          echo "Executing pipeline for branch $BRANCH_NAME"
         }
       }
     }
     stage("build") {
+      when {
+        expression {
+          //env.GIT_BRANCH && (env.GIT_BRANCH.endsWith('dev') || env.GIT_BRANCH.endsWith('main'))
+          BRANCH_NAME == "main"
+        }
+      }
       step {
         script {
           echo "building the application ..."
+          echo "Executing pipeline for branch $BRANCH_NAME"
         }
       }
     }
     stage("deploy") {
+      when {
+        expression {
+          //env.GIT_BRANCH && (env.GIT_BRANCH.endsWith('dev') || env.GIT_BRANCH.endsWith('main'))
+          BRANCH_NAME == "main"
+        }
+      }
       step {
         script {
           echo "deploying the application ..."
+          echo "Executing pipeline for branch $BRANCH_NAME"
         }
       }
     }

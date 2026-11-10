@@ -2,7 +2,7 @@ pipeline {
   agent any
   stages {
     stage("test") {
-      step {
+      steps {
         script {
           echo "testing the application ..."
           echo "Executing pipeline for branch $BRANCH_NAME"
@@ -15,7 +15,7 @@ pipeline {
           BRANCH_NAME == "main"
         }
       }
-      step {
+      steps {
         script {
           echo "building the application ..."
         }
@@ -28,7 +28,7 @@ pipeline {
           BRANCH_NAME == "main"
         }
       }
-      step {
+      steps {
         script {
           echo "deploying the application ..."
         }

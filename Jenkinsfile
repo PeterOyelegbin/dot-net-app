@@ -1,6 +1,8 @@
 #!/usr/bin/env groovy
 
-@Library("jenkins-shared-lib")
+@Library("jenkins-shared-lib") // Global library declaration
+//library identifier: "jenkins-shared-lib@master", retriever: modernSCM([$class: "GitSCMSource", remote: "", credentialsID: "github-cred"]) // Individual library declaration
+
 def gv
 
 pipeline {

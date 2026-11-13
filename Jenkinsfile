@@ -41,6 +41,7 @@ pipeline {
       steps {
         script {
           buildApp()
+          // buildImage "peteroyelegbin/dotnetapp:alpine-1.0"
         }
       }
     }

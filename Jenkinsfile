@@ -43,9 +43,9 @@ pipeline {
       steps {
         script {
           buildApp()
-          //buildImage "peteroyelegbin/dotnetapp:alpine-1.0"
-          //dockerLogin()
-          //dockerPush "peteroyelegbin/dotnetapp:alpine-1.0"
+          // buildImage "peteroyelegbin/dotnetapp:alpine-1.0"
+          // dockerLogin()
+          // dockerPush "peteroyelegbin/dotnetapp:alpine-1.0"
         }
       }
     }
